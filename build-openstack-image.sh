@@ -88,7 +88,7 @@ openstack --os-cloud psi image create \
     --disk-format qcow2 \
     --private \
     --file $COMPOSE_IMAGE_FILENAME \
-    ${IMAGE_NAME}
+    \"${IMAGE_NAME}\"
 
 # Verify that it uploaded successfully.
 openstack --os-cloud psi image show \"${IMAGE_NAME}\"
