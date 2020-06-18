@@ -46,6 +46,14 @@ fi
 greenprint "📥 Installing packages with dnf"
 sudo dnf -qy install composer-cli jq osbuild-composer python3-pip
 
+# Apply lorax patch to work around pytoml issues in RHEL 8.x.
+# See BZ 1843704 or https://github.com/weldr/lorax/pull/1030 for more details.
+if [[ $ID == rhel ]]; then
+    sudo sed -r -i 's#toml.load\(args\[3\]\)#toml.load(open(args[3]))#' \
+        /usr/lib/python3.6/site-packages/composer/cli/compose.py
+    sudo rm -f /usr/lib/python3.6/site-packages/composer/cli/compose.pyc
+fi
+
 # Start osbuild-composer.
 greenprint "🚀 Starting obuild-composer"
 sudo systemctl enable --now osbuild-composer.socket
