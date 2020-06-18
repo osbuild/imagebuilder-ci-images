@@ -52,6 +52,7 @@ sudo systemctl enable --now osbuild-composer.socket
 
 # Push the blueprint.
 greenprint "🚚 Loading blueprint"
+sudo composer-cli sources list
 sudo composer-cli blueprints push blueprints/openstack-ci.toml
 sudo composer-cli blueprints depsolve imagebuilder-ci-openstack
 
