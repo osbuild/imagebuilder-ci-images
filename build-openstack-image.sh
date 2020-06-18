@@ -1,5 +1,10 @@
 #!/bin/bash
-set -euxo pipefail
+set -euo pipefail
+
+# Colorful output.
+function greenprint {
+    echo -e "\033[1;32m${1}\033[0m"
+}
 
 # Get OS data.
 source /etc/os-release
@@ -10,6 +15,7 @@ OSBUILD_RELEASE_PATH=release-version-15/61fce0c
 OS_STRING=${ID}${VERSION_ID//./}
 
 # Add a repository for the recent osbuild release.
+greenprint "🏭 Adding osbuild repository from recent release"
 sudo tee /etc/yum.repos.d/osbuild-mock.repo << EOF
 [osbuild-mock]
 name=osbuild recent release
@@ -22,6 +28,7 @@ EOF
 
 # RHEL 8.3 content is not on the CDN yet, so use internal repositories.
 if [[ $OS_STRING == rhel83 ]]; then
+    greenprint "🌙 Setting up RHEL 8.3 nightly repositories"
     sudo curl -Lsk --retry 5 \
         --output /etc/yum.repos.d/rhel83nightly.repo \
         https://gitlab.cee.redhat.com/snippets/2147/raw
@@ -32,19 +39,24 @@ if [[ $OS_STRING == rhel83 ]]; then
 fi
 
 # Install packages.
+greenprint "📥 Installing packages with dnf"
 sudo dnf -qy install composer-cli jq osbuild-composer python3-pip
 
 # Install openstackclient so we can upload the built images.
+greenprint "📥 Installing openstackclient"
 sudo pip3 -qq install python-openstackclient
 
 # Start osbuild-composer.
+greenprint "🚀 Starting obuild-composer"
 sudo systemctl enable --now osbuild-composer.socket
 
 # Push the blueprint.
+greenprint "🚚 Loading blueprint"
 sudo composer-cli blueprints push blueprints/openstack-ci.toml
 sudo composer-cli blueprints depsolve imagebuilder-ci-openstack
 
-# Start the compose and get the
+# Start the compose and get the ID.
+greenprint "🛠 Starting compose"
 sudo composer-cli --json compose start imagebuilder-ci-openstack openstack \
     | tee /tmp/compose-start.json
 COMPOSE_ID=$(jq -r '.build_id' /tmp/compose-start.json)
@@ -71,6 +83,7 @@ if [[ $COMPOSE_STATUS != FINISHED ]]; then
 fi
 
 # Download the image.
+greenprint "📥 Downloading the image"
 sudo composer-cli compose image ${COMPOSE_ID} > /dev/null
 COMPOSE_IMAGE_FILENAME=$(basename $(find . -maxdepth 1 -type f -name "*.qcow2"))
 
@@ -79,6 +92,7 @@ mkdir -p ~/.config/openstack
 cp $OPENSTACK_CREDS ~/.config/openstack/clouds.yaml
 
 # Upload the image into PSI OpenStack.
+greenprint "📤 Uploading the image to PSI OpenStack"
 CHECKSUM=($(md5sum $COMPOSE_IMAGE_FILENAME))
 TIMESTAMP=$(date +"%Y-%m-%d %H:%M")
 IMAGE_NAME="${ID}-${VERSION_ID} ${TIMESTAMP} (imagebuilder)"
@@ -91,4 +105,5 @@ openstack --os-cloud psi image create \
     \"${IMAGE_NAME}\"
 
 # Verify that it uploaded successfully.
+greenprint "🔎 Verifying image"
 openstack --os-cloud psi image show \"${IMAGE_NAME}\"
