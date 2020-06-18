@@ -8,6 +8,9 @@ name = "java-11-openjdk-headless"
 [[packages]]
 name = "chrony"
 
+[customizations.services]
+enabled = ["sshd", "cloud-init", "cloud-init-local", "cloud-config", "cloud-final"]
+
 [customizations.timezone]
 timezome = "UTC"
 ntpservers = ["clock.corp.redhat.com"]
