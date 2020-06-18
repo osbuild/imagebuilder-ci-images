@@ -1,0 +1,10 @@
+name = "imagebuilder-ci-openstack"
+description = "Minimal Image Builder OpenStack CI image"
+version = "0.0.1"
+
+[[packages]]
+name = "java-1.8.0-openjdk-headless"
+
+[customizations.timezone]
+timezome = "UTC"
+ntpservers = ["clock.corp.redhat.com"]

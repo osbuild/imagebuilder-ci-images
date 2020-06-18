@@ -1,0 +1,59 @@
+pipeline {
+    agent none
+
+    options {
+        timestamps()
+        ansiColor('xterm')
+        // Cancel the pipeline if it runs for more than three hours.
+        timeout(
+            time: 1,
+            unit: "HOURS"
+        )
+    }
+
+    stages {
+        stage("Mock") {
+            failFast true
+
+            parallel {
+                stage('Fedora 31') {
+                    agent { label "fedora31 && psi" }
+                    environment {
+                        OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
+                    }
+                    steps {
+                        sh "build-openstack-image.sh"
+                    }
+                }
+                stage('Fedora 32') {
+                    agent { label "fedora32 && psi" }
+                    environment {
+                        OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
+                    }
+                    steps {
+                        sh "build-openstack-image.sh"
+                    }
+                }
+                stage('RHEL 8 CDN') {
+                    agent { label "rhel8 && psi" }
+                    environment {
+                        OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
+                    }
+                    steps {
+                        sh "build-openstack-image.sh"
+                    }
+                }
+                // NOTE(mhayden): RHEL 8.3 is only available in PSI for now.
+                stage('RHEL 8.3 Nightly') {
+                    agent { label "rhel83 && psi" }
+                    environment {
+                        OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
+                    }
+                    steps {
+                        sh "build-openstack-image.sh"
+                    }
+                }
+            }
+        }
+    }
+}
