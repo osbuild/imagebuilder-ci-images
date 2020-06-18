@@ -59,7 +59,7 @@ accessKeyID = "${AWS_ACCESS_KEY_ID}"
 secretAccessKey = "${AWS_SECRET_ACCESS_KEY}"
 bucket = "${AWS_BUCKET}"
 region = "${AWS_REGION}"
-key = "${IMAGE_KEY}"
+key = "${IMAGE_NAME}"
 EOF
 
 # Push the blueprint.
