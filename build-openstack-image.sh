@@ -25,6 +25,10 @@ if [[ $OS_STRING == rhel83 ]]; then
     sudo curl -Lsk --retry 5 \
         --output /etc/yum.repos.d/rhel83nightly.repo \
         https://gitlab.cee.redhat.com/snippets/2147/raw
+    sudo mkdir -p /etc/osbuild-composer/repositories
+    sudo curl -Lsk --retry 5 \
+        --output /etc/osbuild-composer/repositories/rhel-8.json \
+        https://gitlab.cee.redhat.com/snippets/2361/raw
 fi
 
 # Install packages.
