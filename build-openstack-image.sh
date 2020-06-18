@@ -32,10 +32,10 @@ if [[ $OS_STRING == rhel83 ]]; then
 fi
 
 # Install packages.
-sudo dnf -y install composer-cli jq osbuild-composer python3-pip
+sudo dnf -qy install composer-cli jq osbuild-composer python3-pip
 
 # Install openstackclient so we can upload the built images.
-sudo pip3 install python-openstackclient
+sudo pip3 -qq install python-openstackclient
 
 # Start osbuild-composer.
 sudo systemctl enable --now osbuild-composer.socket
@@ -66,6 +66,7 @@ done
 # Did the compose finish with success?
 if [[ $COMPOSE_STATUS != FINISHED ]]; then
     echo "Something went wrong with the compose. 😢"
+    sudo composer-cli compose log $COMPOSE_ID
     exit 1
 fi
 
