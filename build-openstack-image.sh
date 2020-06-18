@@ -20,6 +20,13 @@ gpgcheck=0
 priority=5
 EOF
 
+# RHEL 8.3 content is not on the CDN yet, so use internal repositories.
+if [[ $OS_STRING == rhel83 ]]; then
+    sudo curl -Lsk --retry 5 \
+        --output /etc/yum.repos.d/rhel83nightly.repo \
+        https://gitlab.cee.redhat.com/snippets/2147/raw
+fi
+
 # Install packages.
 sudo dnf -y install composer-cli jq osbuild-composer python3-pip
 

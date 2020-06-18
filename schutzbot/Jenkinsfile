@@ -12,8 +12,8 @@ pipeline {
     }
 
     stages {
-        stage("Mock") {
-            failFast true
+        stage("Build OpenStack Images") {
+            failFast false
 
             parallel {
                 stage('Fedora 31') {
