@@ -3,10 +3,16 @@ description = "Minimal Image Builder OpenStack CI image"
 version = "0.0.1"
 
 [[packages]]
-name = "java-11-openjdk-headless"
+name = "chrony"
 
 [[packages]]
-name = "chrony"
+name = "cloud-utils-growpart"
+
+[[packages]]
+name = "java-11-openjdk-headless"
+
+[customizations.kernel]
+append = "no_timer_check net.ifnames=0 console=tty1 console=ttyS0,115200n8"
 
 [customizations.services]
 enabled = ["sshd", "cloud-init", "cloud-init-local", "cloud-config", "cloud-final"]
