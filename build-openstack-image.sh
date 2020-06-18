@@ -97,6 +97,7 @@ greenprint "📤 Uploading the image to PSI OpenStack"
 TIMESTAMP=$(date +"%Y-%m-%d %H:%M")
 IMAGE_NAME="${ID}-${VERSION_ID} ${TIMESTAMP} (imagebuilder)"
 openstack --os-cloud psi image create \
+    --format json \
     --container-format bare \
     --disk-format qcow2 \
     --private \
@@ -105,4 +106,4 @@ openstack --os-cloud psi image create \
 
 # Verify that it uploaded successfully.
 greenprint "🔎 Verifying image"
-openstack --os-cloud psi image show "'${IMAGE_NAME}'"
+openstack --os-cloud psi image show --format json "'${IMAGE_NAME}'"
