@@ -10,7 +10,7 @@ OSBUILD_RELEASE_PATH=release-version-15/61fce0c
 OS_STRING=${ID}${VERSION_ID//./}
 
 # Add a repository for the recent osbuild release.
-sudo tee osbuild-mock.repo << EOF
+sudo tee /etc/yum.repos.d/osbuild-mock.repo << EOF
 [osbuild-mock]
 name=osbuild recent release
 baseurl=${S3_URL}/${OSBUILD_RELEASE_PATH}/${OS_STRING}
