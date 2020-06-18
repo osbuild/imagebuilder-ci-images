@@ -31,7 +31,7 @@ sudo systemctl enable --now osbuild-composer.socket
 
 # Push the blueprint.
 sudo composer-cli blueprints push blueprints/openstack-ci.toml
-sudo composer-cli depsolve imagebuilder-ci-openstack
+sudo composer-cli blueprints depsolve imagebuilder-ci-openstack
 
 # Start the compose and get the
 sudo composer-cli --json compose start imagebuilder-ci-openstack openstack \
