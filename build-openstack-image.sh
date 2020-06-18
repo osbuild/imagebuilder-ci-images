@@ -95,7 +95,7 @@ cp $OPENSTACK_CREDS ~/.config/openstack/clouds.yaml
 # Upload the image into PSI OpenStack.
 greenprint "📤 Uploading the image to PSI OpenStack"
 TIMESTAMP=$(date +"%Y%m%d%H%M")
-IMAGE_NAME="${ID}-${VERSION_ID}-${TIMESTAMP}-imagebuilder"
+IMAGE_NAME="imagebuilder-ci-${ID}-${VERSION_ID}-${TIMESTAMP}"
 openstack --os-cloud psi image create \
     --format json \
     --container-format bare \
