@@ -54,6 +54,7 @@ sudo systemctl enable --now osbuild-composer.socket
 greenprint "🚚 Loading blueprint"
 sudo composer-cli sources list
 sudo composer-cli blueprints push blueprints/openstack-ci.toml
+sudo composer-cli blueprints depsolve imagebuilder-ci-openstack > /dev/null
 
 # Start the compose and get the ID.
 greenprint "🛠 Starting compose"
