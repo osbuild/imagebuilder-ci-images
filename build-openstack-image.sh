@@ -54,7 +54,6 @@ sudo systemctl enable --now osbuild-composer.socket
 greenprint "🚚 Loading blueprint"
 sudo composer-cli sources list
 sudo composer-cli blueprints push blueprints/openstack-ci.toml
-sudo composer-cli blueprints depsolve imagebuilder-ci-openstack
 
 # Start the compose and get the ID.
 greenprint "🛠 Starting compose"
@@ -103,8 +102,8 @@ openstack --os-cloud psi image create \
     --disk-format qcow2 \
     --private \
     --file $COMPOSE_IMAGE_FILENAME \
-    \'${IMAGE_NAME}\'
+    "'${IMAGE_NAME}'"
 
 # Verify that it uploaded successfully.
 greenprint "🔎 Verifying image"
-openstack --os-cloud psi image show \'${IMAGE_NAME}\'
+openstack --os-cloud psi image show "'${IMAGE_NAME}'"
