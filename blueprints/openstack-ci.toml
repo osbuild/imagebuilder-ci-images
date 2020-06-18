@@ -9,6 +9,9 @@ name = "chrony"
 name = "cloud-utils-growpart"
 
 [[packages]]
+name = "git"
+
+[[packages]]
 name = "java-11-openjdk-headless"
 
 [customizations.kernel]
