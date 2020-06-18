@@ -22,7 +22,7 @@ pipeline {
                         OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
                     }
                     steps {
-                        sh "build-openstack-image.sh"
+                        sh "./build-openstack-image.sh"
                     }
                 }
                 stage('Fedora 32') {
@@ -31,7 +31,7 @@ pipeline {
                         OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
                     }
                     steps {
-                        sh "build-openstack-image.sh"
+                        sh "./build-openstack-image.sh"
                     }
                 }
                 stage('RHEL 8 CDN') {
@@ -40,7 +40,7 @@ pipeline {
                         OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
                     }
                     steps {
-                        sh "build-openstack-image.sh"
+                        sh "./build-openstack-image.sh"
                     }
                 }
                 // NOTE(mhayden): RHEL 8.3 is only available in PSI for now.
@@ -50,7 +50,7 @@ pipeline {
                         OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
                     }
                     steps {
-                        sh "build-openstack-image.sh"
+                        sh "./build-openstack-image.sh"
                     }
                 }
             }
