@@ -3,7 +3,10 @@ description = "Minimal Image Builder OpenStack CI image"
 version = "0.0.1"
 
 [[packages]]
-name = "java-1.8.0-openjdk-headless"
+name = "java-11-openjdk-headless"
+
+[[packages]]
+name = "chrony"
 
 [customizations.timezone]
 timezome = "UTC"
