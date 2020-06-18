@@ -1,0 +1,24 @@
+name = "imagebuilder-ci-aws"
+description = "Minimal Image Builder AWS CI image"
+version = "0.0.1"
+
+[[packages]]
+name = "chrony"
+
+[[packages]]
+name = "cloud-utils-growpart"
+
+[[packages]]
+name = "git"
+
+[[packages]]
+name = "java-11-openjdk-headless"
+
+[customizations.kernel]
+append = "no_timer_check net.ifnames=0 console=tty1 console=ttyS0,115200n8"
+
+[customizations.services]
+enabled = ["sshd", "cloud-init", "cloud-init-local", "cloud-config", "cloud-final"]
+
+[customizations.timezone]
+timezome = "UTC"

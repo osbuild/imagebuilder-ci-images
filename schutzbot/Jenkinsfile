@@ -1,6 +1,11 @@
 pipeline {
     agent none
 
+    environment {
+        AWS_REGION = "us-east-2"
+        AWS_BUCKET = "imagebuilder-jenkins-testing-use2"
+    }
+
     options {
         timestamps()
         ansiColor('xterm')
@@ -12,6 +17,41 @@ pipeline {
     }
 
     stages {
+
+        stage("Build AWS Images") {
+            failFast false
+
+            parallel {
+                stage('Fedora 31') {
+                    agent { label "fedora31 && psi" }
+                    environment {
+                        AWS_CREDS = credentials('aws-credentials-osbuildci')
+                    }
+                    steps {
+                        sh "./build-aws-image.sh"
+                    }
+                }
+                stage('Fedora 32') {
+                    agent { label "fedora32 && psi" }
+                    environment {
+                        AWS_CREDS = credentials('aws-credentials-osbuildci')
+                    }
+                    steps {
+                        sh "./build-aws-image.sh"
+                    }
+                }
+                stage('RHEL 8 CDN') {
+                    agent { label "rhel8 && psi" }
+                    environment {
+                        AWS_CREDS = credentials('aws-credentials-osbuildci')
+                    }
+                    steps {
+                        sh "./build-aws-image.sh"
+                    }
+                }
+            }
+        }
+
         stage("Build OpenStack Images") {
             failFast false
 
@@ -55,5 +95,6 @@ pipeline {
                 }
             }
         }
+
     }
 }
