@@ -9,49 +9,55 @@ pipeline {
     options {
         timestamps()
         ansiColor('xterm')
-        // Cancel the pipeline if it runs for more than three hours.
+
+        // Cancel the pipeline if it runs for more than one hour.
         timeout(
             time: 1,
             unit: "HOURS"
         )
+
+        // Build the images each weekday between 05:00-05:59.
+        triggers {
+            cron 'H 5 * * 1-5'
+        }
     }
 
     stages {
 
-        stage("Build AWS Images") {
-            failFast false
+        // stage("Build AWS Images") {
+        //     failFast false
 
-            parallel {
-                // Fedora 31's osbuild-composer cannot upload to AWS.
-                // stage('Fedora 31') {
-                //     agent { label "fedora31 && psi" }
-                //     environment {
-                //         AWS_CREDS = credentials('aws-credentials-osbuildci')
-                //     }
-                //     steps {
-                //         sh "./build-aws-image.sh"
-                //     }
-                // }
-                stage('Fedora 32') {
-                    agent { label "fedora32 && psi" }
-                    environment {
-                        AWS_CREDS = credentials('aws-credentials-osbuildci')
-                    }
-                    steps {
-                        sh "./build-aws-image.sh"
-                    }
-                }
-                stage('RHEL 8 CDN') {
-                    agent { label "rhel8 && psi" }
-                    environment {
-                        AWS_CREDS = credentials('aws-credentials-osbuildci')
-                    }
-                    steps {
-                        sh "./build-aws-image.sh"
-                    }
-                }
-            }
-        }
+        //     parallel {
+        //         // Fedora 31's osbuild-composer cannot upload to AWS.
+        //         // stage('Fedora 31') {
+        //         //     agent { label "fedora31 && psi" }
+        //         //     environment {
+        //         //         AWS_CREDS = credentials('aws-credentials-osbuildci')
+        //         //     }
+        //         //     steps {
+        //         //         sh "./build-aws-image.sh"
+        //         //     }
+        //         // }
+        //         stage('Fedora 32') {
+        //             agent { label "fedora32 && psi" }
+        //             environment {
+        //                 AWS_CREDS = credentials('aws-credentials-osbuildci')
+        //             }
+        //             steps {
+        //                 sh "./build-aws-image.sh"
+        //             }
+        //         }
+        //         stage('RHEL 8 CDN') {
+        //             agent { label "rhel8 && psi" }
+        //             environment {
+        //                 AWS_CREDS = credentials('aws-credentials-osbuildci')
+        //             }
+        //             steps {
+        //                 sh "./build-aws-image.sh"
+        //             }
+        //         }
+        //     }
+        // }
 
         stage("Build OpenStack Images") {
             failFast false
