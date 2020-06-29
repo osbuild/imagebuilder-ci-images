@@ -64,7 +64,7 @@ pipeline {
 
             parallel {
                 stage('Fedora 31') {
-                    agent { label "fedora31 && psi" }
+                    agent { label "f31cloudbase && psi" }
                     environment {
                         OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
                     }
@@ -76,7 +76,7 @@ pipeline {
                     }
                 }
                 stage('Fedora 32') {
-                    agent { label "fedora32 && psi" }
+                    agent { label "f32cloudbase && psi" }
                     environment {
                         OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
                     }
@@ -87,7 +87,7 @@ pipeline {
                     }
                 }
                 stage('RHEL 8 CDN') {
-                    agent { label "rhel8 && psi" }
+                    agent { label "rhel8cloudbase && psi" }
                     environment {
                         OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
                     }
@@ -99,7 +99,7 @@ pipeline {
                 }
                 // NOTE(mhayden): RHEL 8.3 is only available in PSI for now.
                 stage('RHEL 8.3 Nightly') {
-                    agent { label "rhel83 && psi" }
+                    agent { label "rhel83cloudbase && psi" }
                     environment {
                         OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
                     }
