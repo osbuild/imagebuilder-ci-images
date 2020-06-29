@@ -1,6 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
+# Ensure cloud-init has finished running.
+while true; do
+    if [[ -f /var/lib/cloud/instance/boot-finished ]]; then
+        break
+    fi
+    echo "Waiting for cloud-init to finish running..."
+    sleep 5
+done
+
 # Colorful output.
 function greenprint {
     echo -e "\033[1;32m${1}\033[0m"
