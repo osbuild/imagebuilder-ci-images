@@ -38,6 +38,12 @@ if [[ $OS_STRING == rhel83 ]]; then
         https://gitlab.cee.redhat.com/snippets/2361/raw
 fi
 
+# Disable modular repositories
+greenprint "❌ Remove modular repositories"
+if [[ $ID == fedora ]]; then
+    rm -fv /etc/yum.repos.d/fedora*modular*
+fi
+
 # Install packages.
 greenprint "📥 Installing packages with dnf"
 sudo dnf -qy install composer-cli jq osbuild-composer python3-pip
@@ -57,9 +63,11 @@ sudo composer-cli blueprints push blueprints/openstack-ci.toml
 
 # Depsolve the blueprint.
 # NOTE(mhayden): Try this twice since the first run sometimes times out.
+greenprint "⚙ Solving dependencies in blueprint"
 DEPSOLVE_CMD="sudo composer-cli blueprints depsolve imagebuilder-ci-openstack"
-if ! $DEPSOLVE_CMD; then
-    $DEPSOLVE_CMD
+if ! $DEPSOLVE_CMD > /dev/null; then
+    echo "💣 First depsolve attempt failed - trying again."
+    $DEPSOLVE_CMD > /dev/null
 fi
 
 # Start the compose and get the ID.
