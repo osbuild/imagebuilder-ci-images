@@ -59,7 +59,7 @@ fi
 
 # Install packages.
 greenprint "📥 Installing packages with dnf"
-sudo dnf -qy install composer-cli jq osbuild-composer python3-pip
+sudo dnf -qy install composer-cli gcc jq osbuild-composer python3-devel python3-pip
 
 # Install openstackclient so we can upload the built images.
 greenprint "📥 Installing openstackclient"
