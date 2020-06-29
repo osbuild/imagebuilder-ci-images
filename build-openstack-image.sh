@@ -41,7 +41,7 @@ fi
 # Disable modular repositories
 greenprint "❌ Remove modular repositories"
 if [[ $ID == fedora ]]; then
-    rm -fv /etc/yum.repos.d/fedora*modular*
+    sudo rm -fv /etc/yum.repos.d/fedora*modular*
 fi
 
 # Install packages.
