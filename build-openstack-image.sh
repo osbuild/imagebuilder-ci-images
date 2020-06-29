@@ -42,6 +42,16 @@ gpgcheck=0
 priority=5
 EOF
 
+# Use production RHEL 8.2 content for now.
+# See https://github.com/osbuild/osbuild-composer/commit/fe9f2c55b8952e4a636ba021b5fe953e7f06a32c
+if [[ $OS_STRING == rhel82 ]]; then
+    greenprint "🌙 Restoring RHEL 8.2 released content repositories"
+    sudo mkdir -p /etc/osbuild-composer/repositories
+    sudo curl -Lsk --retry 5 \
+        --output /etc/osbuild-composer/repositories/rhel-8.json \
+        https://raw.githubusercontent.com/osbuild/osbuild-composer/master/test/external-repos/rhel-8.json
+fi
+
 # RHEL 8.3 content is not on the CDN yet, so use internal repositories.
 if [[ $OS_STRING == rhel83 ]]; then
     greenprint "🌙 Setting up RHEL 8.3 nightly repositories"
