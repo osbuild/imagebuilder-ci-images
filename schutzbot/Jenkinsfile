@@ -15,11 +15,11 @@ pipeline {
             time: 1,
             unit: "HOURS"
         )
+    }
 
-        // Build the images each weekday between 05:00-05:59.
-        triggers {
-            cron 'H 5 * * 1-5'
-        }
+    // Build the images each weekday between 05:00-05:59.
+    triggers {
+        cron 'H 5 * * 1-5'
     }
 
     stages {
