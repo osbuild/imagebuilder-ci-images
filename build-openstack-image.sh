@@ -24,8 +24,11 @@ IMAGE_NAME="imagebuilder-ci-${ID}-${VERSION_ID}-${TIMESTAMP}"
 
 # Set up variables for the osbuild repository.
 S3_URL=https://osbuild-composer-repos.s3.us-east-2.amazonaws.com/osbuild/osbuild-composer
-OSBUILD_RELEASE_PATH=release-version-15/61fce0c
 OS_STRING=${ID}${VERSION_ID//./}
+
+# Set the osbuild-composer release.
+# Currently v16: 534c508c41687b09e173deb60f65f25c195fcfa9
+OSBUILD_RELEASE_PATH=master/534c508
 
 # Add a repository for the recent osbuild release.
 greenprint "🏭 Adding osbuild repository from recent release"
