@@ -57,7 +57,7 @@ sudo composer-cli blueprints push blueprints/openstack-ci.toml
 
 # Depsolve the blueprint.
 # NOTE(mhayden): Try this twice since the first run sometimes times out.
-DEPSOLVE_CMD="sudo composer-cli blueprints depsolve imagebuilder-ci-openstack > /dev/null"
+DEPSOLVE_CMD="sudo composer-cli blueprints depsolve imagebuilder-ci-openstack"
 if ! $DEPSOLVE_CMD; then
     $DEPSOLVE_CMD
 fi
