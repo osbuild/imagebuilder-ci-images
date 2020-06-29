@@ -9,6 +9,10 @@ function greenprint {
 # Get OS data.
 source /etc/os-release
 
+# Set up variables for the image name.
+TIMESTAMP=$(date +"%Y%m%d%H%M")
+IMAGE_NAME="imagebuilder-ci-${ID}-${VERSION_ID}-${TIMESTAMP}"
+
 # Set up variables for the osbuild repository.
 S3_URL=https://osbuild-composer-repos.s3.us-east-2.amazonaws.com/osbuild/osbuild-composer
 OSBUILD_RELEASE_PATH=release-version-15/61fce0c
@@ -108,8 +112,6 @@ cp $OPENSTACK_CREDS ~/.config/openstack/clouds.yaml
 
 # Upload the image into PSI OpenStack.
 greenprint "📤 Uploading the image to PSI OpenStack"
-TIMESTAMP=$(date +"%Y%m%d%H%M")
-IMAGE_NAME="imagebuilder-ci-${ID}-${VERSION_ID}-${TIMESTAMP}"
 openstack --os-cloud psi image create \
     --format json \
     --container-format bare \
