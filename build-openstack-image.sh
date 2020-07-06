@@ -28,7 +28,7 @@ OS_STRING=${ID}${VERSION_ID//./}
 
 # Set the osbuild-composer release.
 # Currently v16: 534c508c41687b09e173deb60f65f25c195fcfa9
-OSBUILD_RELEASE_PATH=master/534c508
+OSBUILD_RELEASE_PATH=master/0c6848f
 
 # Add a repository for the recent osbuild release.
 greenprint "🏭 Adding osbuild repository from recent release"
