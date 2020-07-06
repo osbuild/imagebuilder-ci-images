@@ -91,9 +91,9 @@ sudo composer-cli blueprints push blueprints/openstack-ci.toml
 # NOTE(mhayden): Try this twice since the first run sometimes times out.
 greenprint "⚙ Solving dependencies in blueprint"
 DEPSOLVE_CMD="sudo composer-cli blueprints depsolve imagebuilder-ci-openstack"
-if ! $DEPSOLVE_CMD > /dev/null; then
+if ! $DEPSOLVE_CMD; then
     echo "💣 First depsolve attempt failed - trying again."
-    $DEPSOLVE_CMD > /dev/null
+    $DEPSOLVE_CMD
 fi
 
 # Start the compose and get the ID.
