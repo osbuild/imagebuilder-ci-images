@@ -42,11 +42,23 @@ gpgcheck=0
 priority=5
 EOF
 
+# Set up a directory to hold osbuild-composer overrides.
+mkdir -p /etc/osbuild-composer/repositories
+
+# Use the fastest internal Fedora mirrors.
+if [[ $OS_STRING == fedora31 ]]; then
+    sudo curl -Ls --retry 5 --output /etc/osbuild-composer/repositories/fedora-31.json \
+        https://raw.githubusercontent.com/osbuild/osbuild-composer/master/test/internal-repos/fedora-31.json
+fi
+if [[ $OS_STRING == fedora32 ]]; then
+    sudo curl -Ls --retry 5 --output /etc/osbuild-composer/repositories/fedora-32.json \
+        https://raw.githubusercontent.com/osbuild/osbuild-composer/master/test/internal-repos/fedora-32.json
+fi
+
 # Use production RHEL 8.2 content for now.
 # See https://github.com/osbuild/osbuild-composer/commit/fe9f2c55b8952e4a636ba021b5fe953e7f06a32c
 if [[ $OS_STRING == rhel82 ]]; then
     greenprint "🌙 Restoring RHEL 8.2 released content repositories"
-    sudo mkdir -p /etc/osbuild-composer/repositories
     sudo curl -Lsk --retry 5 \
         --output /etc/osbuild-composer/repositories/rhel-8.json \
         https://raw.githubusercontent.com/osbuild/osbuild-composer/master/test/external-repos/rhel-8.json
@@ -58,7 +70,6 @@ if [[ $OS_STRING == rhel83 ]]; then
     sudo curl -Lsk --retry 5 \
         --output /etc/yum.repos.d/rhel83nightly.repo \
         https://gitlab.cee.redhat.com/snippets/2147/raw
-    sudo mkdir -p /etc/osbuild-composer/repositories
     sudo curl -Lsk --retry 5 \
         --output /etc/osbuild-composer/repositories/rhel-8.json \
         https://gitlab.cee.redhat.com/snippets/2361/raw
@@ -72,21 +83,16 @@ fi
 
 # Install packages.
 greenprint "📥 Installing packages with dnf"
-sudo dnf -qy install composer-cli gcc jq osbuild-composer python3-devel python3-pip
+sudo dnf -y install composer-cli gcc jq osbuild-composer python3-devel python3-pip
 
 # Install openstackclient so we can upload the built images.
 greenprint "📥 Installing openstackclient"
-sudo pip3 -qq install python-openstackclient
+sudo pip3 -q install python-openstackclient
 
 # Start osbuild-composer.
 greenprint "🚀 Starting obuild-composer"
-sudo systemctl start osbuild-composer.socket
-sudo systemctl enable osbuild-composer.socket
-
-# Fedora 31 has an issue with slow osbuild-composer startup.
-if [[ $ID == fedora ]] && [[ $VERSION_ID == 31 ]]; then
-    sleep 5
-fi
+sudo systemctl enable --now osbuild-composer.socket
+sudo composer-cli status show
 
 # Push the blueprint.
 greenprint "🚚 Loading blueprint"
