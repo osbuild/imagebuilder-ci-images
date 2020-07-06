@@ -80,7 +80,13 @@ sudo pip3 -qq install python-openstackclient
 
 # Start osbuild-composer.
 greenprint "🚀 Starting obuild-composer"
-sudo systemctl enable --now osbuild-composer.socket
+sudo systemctl start osbuild-composer.socket
+sudo systemctl enable osbuild-composer.socket
+
+# Fedora 31 has an issue with slow osbuild-composer startup.
+if [[ $ID == fedora ]] && [[ $VERSION_ID == 31 ]]; then
+    sleep 5
+fi
 
 # Push the blueprint.
 greenprint "🚚 Loading blueprint"
