@@ -89,6 +89,8 @@ sudo dnf -y install composer-cli gcc jq osbuild-composer python3-devel python3-p
 greenprint "📥 Installing openstackclient"
 sudo pip3 -q install python-openstackclient
 
+sleep 3600
+
 # Start osbuild-composer.
 greenprint "🚀 Starting obuild-composer"
 sudo systemctl enable --now osbuild-composer.socket
