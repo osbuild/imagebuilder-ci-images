@@ -43,7 +43,7 @@ priority=5
 EOF
 
 # Set up a directory to hold osbuild-composer overrides.
-mkdir -p /etc/osbuild-composer/repositories
+sudo mkdir -p /etc/osbuild-composer/repositories
 
 # Use the fastest internal Fedora mirrors.
 if [[ $OS_STRING == fedora31 ]]; then
