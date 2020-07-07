@@ -33,10 +33,10 @@ EOF
 # Ensure RHEL 8.2 is registered.
 if [[ $OS_STRING == rhel82 ]]; then
     greenprint "🪙 Registering RHEL 8"
-    subscription-manager register \
+    sudo subscription-manager register \
         --username=$RHN_CREDS_USR --password=$RHN_CREDS_PSW \
         --auto-attach
-    subscription-manager repos \
+    sudo subscription-manager repos \
         --enable=codeready-builder-for-rhel-8-x86_64-rpms
 fi
 
