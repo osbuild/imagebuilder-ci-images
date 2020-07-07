@@ -25,17 +25,14 @@ pipeline {
     stages {
 
         stage("Build AWS Images") {
-            failFast false
-
-            environment {
-                RHN_CREDS = credentials("rhn-credentials-mhayden")
-            }
+            failFast true
 
             parallel {
                 stage('Fedora 32') {
                     agent { label "f32cloudbase && aws" }
                     environment {
                         AWS_CREDS = credentials('aws-credentials-osbuildci')
+                        RHN_CREDS = credentials("rhn-credentials-mhayden")
                     }
                     steps {
                         sh "./build-aws-image.sh"
@@ -45,6 +42,7 @@ pipeline {
                     agent { label "rhel8cloudbase && aws" }
                     environment {
                         AWS_CREDS = credentials('aws-credentials-osbuildci')
+                        RHN_CREDS = credentials("rhn-credentials-mhayden")
                     }
                     steps {
                         sh "./build-aws-image.sh"
