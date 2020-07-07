@@ -27,6 +27,10 @@ pipeline {
         stage("Build AWS Images") {
             failFast false
 
+            environment {
+                RHN_CREDS = credentials("rhn-credentials-mhayden")
+            }
+
             parallel {
                 stage('Fedora 32') {
                     agent { label "f32cloudbase && aws" }
