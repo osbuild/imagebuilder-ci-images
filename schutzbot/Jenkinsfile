@@ -37,70 +37,70 @@ pipeline {
                         sh "./build-aws-image.sh"
                     }
                 }
-                // stage('RHEL 8 CDN') {
-                //     agent { label "rhel8cloudbase && aws" }
-                //     environment {
-                //         AWS_CREDS = credentials('aws-credentials-osbuildci')
-                //     }
-                //     steps {
-                //         sh "./build-aws-image.sh"
-                //     }
-                // }
+                stage('RHEL 8 CDN') {
+                    agent { label "rhel8cloudbase && aws" }
+                    environment {
+                        AWS_CREDS = credentials('aws-credentials-osbuildci')
+                    }
+                    steps {
+                        sh "./build-aws-image.sh"
+                    }
+                }
             }
         }
 
-        // stage("Build OpenStack Images") {
-        //     failFast false
+        stage("Build OpenStack Images") {
+            failFast false
 
-        //     parallel {
-        //         stage('Fedora 31') {
-        //             agent { label "f31cloudbase && psi" }
-        //             environment {
-        //                 OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
-        //             }
-        //             steps {
-        //                 retry(3) {
-        //                     sh "./build-openstack-image.sh"
-        //                 }
+            parallel {
+                stage('Fedora 31') {
+                    agent { label "f31cloudbase && psi" }
+                    environment {
+                        OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
+                    }
+                    steps {
+                        retry(3) {
+                            sh "./build-openstack-image.sh"
+                        }
 
-        //             }
-        //         }
-        //         stage('Fedora 32') {
-        //             agent { label "f32cloudbase && psi" }
-        //             environment {
-        //                 OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
-        //             }
-        //             steps {
-        //                 retry(3) {
-        //                     sh "./build-openstack-image.sh"
-        //                 }
-        //             }
-        //         }
-        //         stage('RHEL 8 CDN') {
-        //             agent { label "rhel8cloudbase && psi" }
-        //             environment {
-        //                 OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
-        //             }
-        //             steps {
-        //                 retry(3) {
-        //                     sh "./build-openstack-image.sh"
-        //                 }
-        //             }
-        //         }
-        //         // NOTE(mhayden): RHEL 8.3 is only available in PSI for now.
-        //         stage('RHEL 8.3 Nightly') {
-        //             agent { label "rhel83cloudbase && psi" }
-        //             environment {
-        //                 OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
-        //             }
-        //             steps {
-        //                 retry(3) {
-        //                     sh "./build-openstack-image.sh"
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+                    }
+                }
+                stage('Fedora 32') {
+                    agent { label "f32cloudbase && psi" }
+                    environment {
+                        OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
+                    }
+                    steps {
+                        retry(3) {
+                            sh "./build-openstack-image.sh"
+                        }
+                    }
+                }
+                stage('RHEL 8 CDN') {
+                    agent { label "rhel8cloudbase && psi" }
+                    environment {
+                        OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
+                    }
+                    steps {
+                        retry(3) {
+                            sh "./build-openstack-image.sh"
+                        }
+                    }
+                }
+                // NOTE(mhayden): RHEL 8.3 is only available in PSI for now.
+                stage('RHEL 8.3 Nightly') {
+                    agent { label "rhel83cloudbase && psi" }
+                    environment {
+                        OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
+                    }
+                    steps {
+                        retry(3) {
+                            sh "./build-openstack-image.sh"
+                        }
+                    }
+                }
+            }
+        }
 
     }
 }
